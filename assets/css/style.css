@@ -1030,10 +1030,11 @@ div#preloader {
 
 #portfolio-flters li {
   cursor: pointer;
-  margin: 5px 5px 5px 0;
+  margin: 10px 10px 10px 0;
   display: inline-block;
-  padding: 5px 10px;
-  font-size: 11px;
+  padding: 8px 24px;
+  font-size: 12px;
+  font-weight: 700;
   line-height: 15px;
   color: #444444;
   border-radius: 50px;

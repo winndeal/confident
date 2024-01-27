@@ -1129,27 +1129,85 @@
             <!-- Start  contact -->
             <div class="col-md-6">
               <div class="form contact-form">
-                <form action="forms/contact.js" method="post" role="form" class="php-email-form">
-                  <div class="form-group">
-                    <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
-                  </div>
-                  <div class="form-group mt-3">
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
-                  </div>
-                  <div class="form-group mt-3">
-                    <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
-                  </div>
-                  <div class="form-group mt-3">
-                    <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
-                  </div>
-                  <div class="my-3">
-                    <div class="loading">Loading</div>
-                    <div class="error-message"></div>
-                    <div class="sent-message">Your message has been sent. Thank you!</div>
-                  </div>
-                  <div class="text-center"><button type="submit">Send Message</button></div>
+                <form id="myForm" action="javascript:void(0);" method="post" role="form" class="php-email-form">
+                    <div class="form-group">
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <textarea class="form-control" name="message" rows="5" id="message" placeholder="Message" required></textarea>
+                    </div>
+                    <div class="my-3">
+                        <div class="loading" id="loading" style="display: none;">please wait...</div>
+                        <div class="error-message" id="error-message"></div>
+                        <div class="sent-message" id="sent-message" style="display: none;">Your message has been sent. Thank you!</div>
+                    </div>
+                    <div class="text-center"><button type="submit" onclick="sendEmail()">Send Message</button></div>
                 </form>
-              </div>
+            </div>
+            
+            <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+            <script type="text/javascript">
+                emailjs.init("-D6EPe2WKERWwiExI"); // Replace "user_ID" with your actual User ID from EmailJS
+            
+                function sendEmail() {
+                    var name = document.getElementById("name");
+                    var email = document.getElementById("email");
+                    var subject = document.getElementById("subject");
+                    var message = document.getElementById("message");
+                    var loading = document.getElementById("loading");
+                    var errorMessage = document.getElementById("error-message");
+                    var sentMessage = document.getElementById("sent-message");
+            
+                    if (name && email && subject && message) {
+                        // Show loading indicator
+                        loading.style.display = "block";
+                        // Hide previous messages
+                        errorMessage.style.display = "none";
+                        sentMessage.style.display = "none";
+            
+                        emailjs.send("service_y56j133", "template_btakn7n", {
+                            name: name.value,
+                            email: email.value,
+                            subject: subject.value,
+                            message: message.value
+                        }).then(
+                            function(response) {
+                                console.log("Email sent successfully:", response);
+                                // Update your UI here
+                                sentMessage.style.display = "block"; // Show the success message
+                                clearForm(); // Clear the form
+                            },
+                            function(error) {
+                                console.log("Email send failed:", error);
+                                // Update your UI here, e.g., show error message
+                                errorMessage.innerHTML = "Error sending the email. Please try again.";
+                                errorMessage.style.display = "block";
+                            }
+                        ).finally(function() {
+                            // Hide loading indicator after email is sent (or if there's an error)
+                            loading.style.display = "none";
+                        });
+                    } else {
+                        console.error("One or more form elements not found");
+                    }
+                }
+            
+                function clearForm() {
+                    // Clear form fields
+                    document.getElementById("name").value = "";
+                    document.getElementById("email").value = "";
+                    document.getElementById("subject").value = "";
+                    document.getElementById("message").value = "";
+                }
+            </script>
+            
+            
             </div>
             <!-- End Left contact -->
           </div>
@@ -1240,7 +1298,6 @@
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
